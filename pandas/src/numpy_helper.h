@@ -134,7 +134,9 @@ PyObject* sarr_from_data(PyArray_Descr *descr, int length, void* data) {
                                                    NULL, data, 0, NULL);
 
     // Returned array doesn't own data by default
-    result->flags |= NPY_OWNDATA;
+    PyArray_ENABLEFLAGS(result, NPY_ARRAY_OWNDATA);
+    //deprecated
+    //result->flags |= NPY_OWNDATA;
 
     return (PyObject*) result;
 }
@@ -159,11 +161,13 @@ void transfer_object_column(char *dst, char *src, size_t stride,
 }
 
 void set_array_owndata(PyArrayObject *ao) {
-    ao->flags |= NPY_OWNDATA;
+    PyArray_ENABLEFLAGS(ao, NPY_ARRAY_OWNDATA);
 }
 
 void set_array_not_contiguous(PyArrayObject *ao) {
-    ao->flags &= ~(NPY_C_CONTIGUOUS | NPY_F_CONTIGUOUS);
+    PyArray_ENABLEFLAGS(ao, NPY_ARRAY_C_CONTIGUOUS | NPY_ARRAY_F_CONTIGUOUS); 
+    //deprecated
+    //ao->flags &= ~(NPY_C_CONTIGUOUS | NPY_F_CONTIGUOUS);
 }
 
 

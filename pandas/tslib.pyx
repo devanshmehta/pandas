@@ -2,7 +2,7 @@
 
 cimport numpy as np
 from numpy cimport (int8_t, int32_t, int64_t, import_array, ndarray,
-                    NPY_INT64, NPY_DATETIME, NPY_TIMEDELTA)
+                    NPY_INT64, NPY_DATETIME, NPY_TIMEDELTA, PyArray_TYPE)
 import numpy as np
 
 from cpython cimport (
@@ -613,9 +613,9 @@ cpdef object get_value_box(ndarray arr, object loc):
     if i >= sz or sz == 0 or i < 0:
         raise IndexError('index out of bounds')
 
-    if arr.descr.type_num == NPY_DATETIME:
+    if PyArray_TYPE(arr) == NPY_DATETIME:
         return Timestamp(util.get_value_1d(arr, i))
-    elif arr.descr.type_num == NPY_TIMEDELTA:
+    elif PyArray_TYPE(arr) == NPY_TIMEDELTA:
         return Timedelta(util.get_value_1d(arr, i))
     else:
         return util.get_value_1d(arr, i)
